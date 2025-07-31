@@ -39,7 +39,7 @@ namespace Ecs
 
         private void AddOneFrames()
         {
-        
+            _systems.OneFrame<InteractEvent>();
         }
 
         private void Update()

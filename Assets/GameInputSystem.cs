@@ -44,6 +44,15 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Interacted"",
+                    ""type"": ""Button"",
+                    ""id"": ""09859763-3278-4a63-b81d-4329601a23be"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -189,6 +198,17 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""03013c14-0a86-4265-bdbf-0db8a04e45d8"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interacted"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -199,6 +219,7 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_Interacted = m_Player.FindAction("Interacted", throwIfNotFound: true);
     }
 
     ~@GameInputSystem()
@@ -267,12 +288,14 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_Interacted;
     public struct PlayerActions
     {
         private @GameInputSystem m_Wrapper;
         public PlayerActions(@GameInputSystem wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        public InputAction @Interacted => m_Wrapper.m_Player_Interacted;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -288,6 +311,9 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Interacted.started += instance.OnInteracted;
+            @Interacted.performed += instance.OnInteracted;
+            @Interacted.canceled += instance.OnInteracted;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -298,6 +324,9 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Interacted.started -= instance.OnInteracted;
+            @Interacted.performed -= instance.OnInteracted;
+            @Interacted.canceled -= instance.OnInteracted;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -319,5 +348,6 @@ public partial class @GameInputSystem: IInputActionCollection2, IDisposable
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnInteracted(InputAction.CallbackContext context);
     }
 }

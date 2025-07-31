@@ -1,12 +1,13 @@
 using Ecs.Components;
 using Leopotam.Ecs;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Ecs.Systems
 {
     sealed class PlayerInputSystem : IEcsInitSystem, IEcsRunSystem  
     {
-        private readonly EcsFilter<PlayerTag, DirectionComponent, CameraComponent> _directionFilter = null;
+        private readonly EcsFilter<PlayerTag, DirectionComponent, CameraComponent> _directionFilter = null; // InteractEvent
         
         private GameInputSystem _gameInput;
         
@@ -22,23 +23,59 @@ namespace Ecs.Systems
         {
             foreach (var i in _directionFilter)
             {
-                ref var directionComponent = ref _directionFilter.Get2(i);
-                ref var direction = ref directionComponent.direction;
-                
-                ref var cameraComponent = ref _directionFilter.Get3(i);
-                ref var targetDirection = ref cameraComponent.targetDirection;
+                SetMove(i);
+                SetLook(i);
 
-                direction.x = DirectionMove().x;
-                direction.z = DirectionMove().z;
+                // _gameInput.Player.Interacted.performed += Change;
                 
-                var lookInput = DirectionLook();
-                targetDirection.x += lookInput.x * cameraComponent.mouseSensitivity;
-                targetDirection.y -= lookInput.y * cameraComponent.mouseSensitivity;
                 
-                targetDirection.y = Mathf.Clamp(targetDirection.y, cameraComponent.minPitch, cameraComponent.maxPitch);
-                
-                Debug.Log(targetDirection);
+                // ref var directionComponent = ref _directionFilter.Get2(i);
+                // ref var direction = ref directionComponent.direction;
+
+                // ref var cameraComponent = ref _directionFilter.Get3(i);
+                // ref var targetDirection = ref cameraComponent.targetDirection;
+
+                // direction.x = DirectionMove().x;
+                // direction.z = DirectionMove().z;
+
+                // var lookInput = DirectionLook();
+                // targetDirection.x += lookInput.x * cameraComponent.mouseSensitivity;
+                // targetDirection.y -= lookInput.y * cameraComponent.mouseSensitivity;
+
+                // targetDirection.y = Mathf.Clamp(targetDirection.y, cameraComponent.minPitch, cameraComponent.maxPitch);
+
+                // Debug.Log(targetDirection);
             }
+        }
+
+        // private void Change(InputAction.CallbackContext context)
+        // {
+        //     foreach (var i in _directionFilter)
+        //     {
+        //         ref var entity = ref _directionFilter.GetEntity(i);
+        //         entity.Get<InteractEvent>();
+        //     }
+        // }
+        
+        private void SetMove(int i)
+        {
+            ref var directionComponent = ref _directionFilter.Get2(i);
+            ref var direction = ref directionComponent.direction;
+            
+            direction.x = DirectionMove().x;
+            direction.z = DirectionMove().z;
+        }
+
+        private void SetLook(int i)
+        {
+            ref var cameraComponent = ref _directionFilter.Get3(i);
+            ref var targetDirection = ref cameraComponent.targetDirection;
+            
+            var lookInput = DirectionLook();
+            targetDirection.x += lookInput.x * cameraComponent.mouseSensitivity;
+            targetDirection.y -= lookInput.y * cameraComponent.mouseSensitivity;
+                
+            targetDirection.y = Mathf.Clamp(targetDirection.y, cameraComponent.minPitch, cameraComponent.maxPitch);
         }
         
         private Vector3 DirectionMove()
