@@ -1,3 +1,4 @@
+using Ecs;
 using Leopotam.Ecs;
 using UnityEngine;
 using Voody.UniLeo;
@@ -28,7 +29,9 @@ public class EcsBootstrap : MonoBehaviour
 
     private void AddSystems()
     {
-        
+        _systems.
+            Add(new PlayerInputSystem()).
+            Add(new MovementSystem());
     }
 
     private void AddOneFrames()
