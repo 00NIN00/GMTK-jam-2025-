@@ -1,3 +1,4 @@
+using Ecs.Components;
 using Ecs.Systems;
 using Leopotam.Ecs;
 using UnityEngine;
@@ -5,7 +6,7 @@ using Voody.UniLeo;
 
 namespace Ecs
 {
-    public class EcsBootstrap : MonoBehaviour
+    public class EcsStartup : MonoBehaviour
     {
         private EcsWorld _world;
         private EcsSystems _systems;
@@ -31,15 +32,15 @@ namespace Ecs
 
         private void AddSystems()
         {
-            _systems.
-                Add(new PlayerInputSystem()).
-                Add(new MovementSystem()).
-                Add(new LookSystem());
+            _systems
+                .Add(new PlayerInputSystem())
+                .Add(new MovementSystem())
+                .Add(new LookSystem())
+                .Add(new RaycastDeleteSystem());
         }
 
         private void AddOneFrames()
         {
-            _systems.OneFrame<InteractEvent>();
         }
 
         private void Update()

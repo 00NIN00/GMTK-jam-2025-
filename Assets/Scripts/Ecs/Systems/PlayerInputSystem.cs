@@ -8,6 +8,7 @@ namespace Ecs.Systems
     sealed class PlayerInputSystem : IEcsInitSystem, IEcsRunSystem  
     {
         private readonly EcsFilter<PlayerTag, DirectionComponent, CameraComponent> _directionFilter = null; // InteractEvent
+        // private readonly EcsFilter<InputData> _inputFilter = null;
         
         private GameInputSystem _gameInput;
         
@@ -21,11 +22,20 @@ namespace Ecs.Systems
         
         public void Run()
         {
+            // foreach (var i in _inputFilter)
+            // {
+            //     ref var input = ref _inputFilter.Get1(i);
+            //     // Записываем состояние клавиши E (можно изменить на любую другую)
+            //     // input.InteractPressed = Input.GetKeyDown(KeyCode.E);
+            //     input.IsInteractPressed = _gameInput.Player.Interacted.enabled;
+            // }
+            
             foreach (var i in _directionFilter)
             {
                 SetMove(i);
                 SetLook(i);
 
+                
                 // _gameInput.Player.Interacted.performed += Change;
                 
                 
