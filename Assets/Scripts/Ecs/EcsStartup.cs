@@ -11,6 +11,8 @@ namespace Ecs
         private EcsWorld _world;
         private EcsSystems _systems;
 
+        public EcsWorld World => _world;
+
         private void Start()
         {
             _world =  new EcsWorld();
@@ -36,7 +38,8 @@ namespace Ecs
                 .Add(new PlayerInputSystem())
                 .Add(new MovementSystem())
                 .Add(new LookSystem())
-                .Add(new RaycastDeleteSystem());
+                .Add(new RaycastInteractionSystem());
+                //.Add(new RaycastDeleteSystem())
         }
 
         private void AddOneFrames()

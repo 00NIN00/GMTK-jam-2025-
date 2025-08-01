@@ -7,6 +7,7 @@ namespace Ecs.Components
     public struct CameraComponent
     {
         public Transform cameraTransform;
+        public Camera camera;
         [Range(0, 10)] public float mouseSensitivity;
         [Range(1, 20)] public float smoothSpeed;
         public float minPitch;        
