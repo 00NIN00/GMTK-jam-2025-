@@ -38,7 +38,8 @@ namespace Ecs
                 .Add(new PlayerInputSystem())
                 .Add(new MovementSystem())
                 .Add(new LookSystem())
-                .Add(new RaycastInteractionSystem());
+                .Add(new RaycastInteractionSystem())
+                .Add(new InderactDetectedSystem());
                 //.Add(new RaycastDeleteSystem())
         }
 
